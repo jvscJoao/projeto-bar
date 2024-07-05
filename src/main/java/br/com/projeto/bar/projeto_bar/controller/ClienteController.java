@@ -3,6 +3,7 @@ package br.com.projeto.bar.projeto_bar.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,49 +15,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.projeto.bar.projeto_bar.entity.Produto;
-import br.com.projeto.bar.projeto_bar.services.ProdutoService;
+import br.com.projeto.bar.projeto_bar.entity.Cliente;
+import br.com.projeto.bar.projeto_bar.services.ClienteService;
 
 @RestController
-@RequestMapping("/produtos")
-public class ProdutoController {
-    
-    private final ProdutoService produtoService;
+@RequestMapping("/clientes")
+public class ClienteController {
 
-    public ProdutoController(ProdutoService produtoService) {
-        this.produtoService = produtoService;
+    private final ClienteService clienteService;
+    
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> searchAll() {
-        List<Produto> list = produtoService.searchAll();
+    public ResponseEntity<List<Cliente>> searchAll() {
+        List<Cliente> list = clienteService.searchAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> searchById(@PathVariable(name = "id") String id) {
-        return ResponseEntity.ok().body(produtoService.searchById(id));
+    public ResponseEntity<Cliente> searchById(@PathVariable(name = "id") String id) {
+        return ResponseEntity.ok().body(clienteService.searchById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Produto> insert(@RequestBody Produto obj) {
-        Produto newObj = produtoService.insert(obj);
+    public ResponseEntity<Cliente> insert(@RequestBody Cliente cliente) {
+        Cliente obj = clienteService.update(cliente);
         URI locator = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(newObj.getId())
+            .buildAndExpand(cliente.getId())
         .toUri();
-        return ResponseEntity.created(locator).body(newObj);
+        return ResponseEntity.created(locator).body(obj);
     }
 
     @PutMapping
-    public ResponseEntity<Produto> update(@RequestBody Produto obj) {
-        Produto objUpdated = produtoService.update(obj);
-        return ResponseEntity.ok().body(objUpdated);
+    public ResponseEntity<Cliente> update(@RequestBody Cliente cliente) {
+        Cliente obj = clienteService.update(cliente);
+        return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable(name = "id") String id) {
-        produtoService.deleteById(id);
+        clienteService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }

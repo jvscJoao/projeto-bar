@@ -30,6 +30,7 @@ public class ProdutoService {
     }
 
     public Produto insert(Produto obj) {
+        obj.setId(null);
         return produtoRepository.save(obj);
     }
 
@@ -37,7 +38,7 @@ public class ProdutoService {
         return produtoRepository.save(obj);
     }
     
-    public void delete(String id) {
+    public void deleteById(String id) {
         produtoRepository.deleteById(id);;
     }
 }
