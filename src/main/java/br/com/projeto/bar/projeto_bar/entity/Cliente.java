@@ -62,5 +62,4 @@ public class Cliente {
         this.cpf = cpf;
     }
 
-
 }
