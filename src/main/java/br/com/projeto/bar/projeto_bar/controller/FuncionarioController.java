@@ -46,7 +46,7 @@ public class FuncionarioController {
             .buildAndExpand(obj
             .getId())
         .toUri();
-        return ResponseEntity.created(locator).build();
+        return ResponseEntity.created(locator).body(obj);
     }
 
     @PutMapping

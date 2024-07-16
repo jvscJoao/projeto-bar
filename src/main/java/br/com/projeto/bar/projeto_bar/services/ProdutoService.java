@@ -30,7 +30,6 @@ public class ProdutoService {
     }
 
     public Produto insert(Produto obj) {
-        obj.setId(null);
         return produtoRepository.save(obj);
     }
 
