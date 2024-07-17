@@ -1,18 +1,20 @@
 package br.com.projeto.bar.projeto_bar.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.projeto.bar.projeto_bar.enums.Mesa;
-import jakarta.persistence.CascadeType;
+import br.com.projeto.bar.projeto_bar.enums.StatusPedido;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Pedido {
@@ -21,22 +23,28 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private Mesa mesa;
     @ManyToOne
     @JoinColumn(name = "funcionario_id")
     private Funcionario funcionario;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-    private Mesa mesa;
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itemPedidos = new ArrayList<>();
+    @OneToOne(mappedBy = "pedido")
+    private Pagamento pagamento;
     
     public Pedido() {}
 
-    public Pedido(String nome, Funcionario funcionario, Mesa mesa) {
+    public Pedido(String nome, StatusPedido status, Mesa mesa, Funcionario funcionario) {
         this.nome = nome;
-        this.funcionario = funcionario;
+        this.status = status;
         this.mesa = mesa;
+        this.funcionario = funcionario;
     }
 
     public Long getId() {
@@ -55,6 +63,22 @@ public class Pedido {
         this.nome = nome;
     }
 
+    public StatusPedido getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
+    }
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.mesa = mesa;
+    }
+
     public Funcionario getFuncionario() {
         return funcionario;
     }
@@ -71,20 +95,20 @@ public class Pedido {
         this.cliente = cliente;
     }
 
-    public Mesa getMesa() {
-        return mesa;
-    }
-
-    public void setMesa(Mesa mesa) {
-        this.mesa = mesa;
-    }
-
     public List<ItemPedido> getItemPedidos() {
         return itemPedidos;
     }
 
     public void setItemPedidos(List<ItemPedido> itemPedidos) {
         this.itemPedidos = itemPedidos;
+    }
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
     }
 
     public Double getValorTotal() {
@@ -115,6 +139,5 @@ public class Pedido {
             return false;
         return true;
     }
-
-    
+ 
 }

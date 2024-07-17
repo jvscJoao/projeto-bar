@@ -53,7 +53,7 @@ public class PedidoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Pedido> update(@PathVariable(name = "id") Long id, @RequestBody Pedido pedido) {
-        Pedido updatedObj = pedidoService.update(pedido);
+        Pedido updatedObj = pedidoService.update(id, pedido);
         return ResponseEntity.ok().body(updatedObj);
     }
 
